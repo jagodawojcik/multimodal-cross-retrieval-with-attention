@@ -37,10 +37,10 @@ def train_with_triplet_loss(epochs=EPOCHS, batch_size=32):
 
 
     # Load your embeddings
-    query_embeddings = np.load("/scratch/users/k21171248/tactile_embeddings_train.npy", allow_pickle=True).item()
-    fused_embeddings = np.load("/scratch/users/k21171248/visual_audio_fused_train.npy", allow_pickle=True).item()
-    query_embeddings_test = np.load("/scratch/users/k21171248/tactile_embeddings_test.npy", allow_pickle=True).item()  
-    fused_embeddings_test = np.load("/scratch/users/k21171248/visual_audio_fused_test.npy", allow_pickle=True).item()  
+    query_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/tactile_embeddings_train.npy", allow_pickle=True).item()
+    fused_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/visual_audio_fused_train.npy", allow_pickle=True).item()
+    query_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/tactile_embeddings_test.npy", allow_pickle=True).item()  
+    fused_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/visual_audio_fused_test.npy", allow_pickle=True).item()  
 
     # Instantiate your dataset and dataloader
     triplet_dataset = TripletDataset(query_embeddings, fused_embeddings)

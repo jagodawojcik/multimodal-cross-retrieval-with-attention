@@ -244,7 +244,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
     plt.show()
 
     # Save the figure
-    plt.savefig("train_test_loss_plot.png")
+    plt.savefig(f"{RESULTS_DIRECTORY}/train_test_loss_plot.png")
 
     # Display the plot
     plt.show()
