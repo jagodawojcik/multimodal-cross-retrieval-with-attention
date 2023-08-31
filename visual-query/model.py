@@ -84,8 +84,8 @@ class CrossSensoryNetwork(nn.Module):
         visual_output = self.visual_branch(visual_input)
 
         # Bi-directional cross-attention
-        attn_out1, _ = self.attention(audio_output.unsqueeze(0), visual_output.unsqueeze(0), visual_output.unsqueeze(0))
-        attn_out2, _ = self.attention(visual_output.unsqueeze(0), audio_output.unsqueeze(0), audio_output.unsqueeze(0))
+        attn_out1, _ = self.attention(audio_output.unsqueeze(0), tactile_output.unsqueeze(0), tactile_output.unsqueeze(0))
+        attn_out2, _ = self.attention(tactile_output.unsqueeze(0), audio_output.unsqueeze(0), audio_output.unsqueeze(0))
 
         # Remove the extra dimensions and combine
         attn_out1 = attn_out1.squeeze(0)
@@ -93,7 +93,7 @@ class CrossSensoryNetwork(nn.Module):
         attn_out_combined = (attn_out1 + attn_out2) / 2  # Average the two attention outputs
 
         # Concatenation for classification
-        joint_representation = torch.cat([tactile_output, attn_out_combined], dim=1)
+        joint_representation = torch.cat([visual_output, attn_out_combined], dim=1)
         joint_classification_output = self.joint_fc(joint_representation)
 
         return audio_output, tactile_output, visual_output, attn_out_combined, joint_classification_output

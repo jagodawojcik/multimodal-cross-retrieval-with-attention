@@ -8,15 +8,15 @@ import matplotlib.pyplot as plt
 import json
 import os
 # Create a directory to save your results
-RESULTS_DIRECTORY = 'triplet-results-tactile-query'
+RESULTS_DIRECTORY = 'triplet-results-visual-query'
 # Number of epochs and margin for triplet loss
-EPOCHS = 501
+EPOCHS = 20001
 MARGIN = 0.5
 
 # Set device to gpu if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def train_with_triplet_loss(epochs=EPOCHS, batch_size=32):
+def train_with_triplet_loss(epochs=EPOCHS, batch_size=1):
     print("STARTING TRAINING...")
 
     #Create a directory to save your results
@@ -33,14 +33,14 @@ def train_with_triplet_loss(epochs=EPOCHS, batch_size=32):
         # Write the user's input to the file
         # file.write(user_input)
         # file.write("\n")
-        file.write(f"Query is Touch. Vision+Audio as Retrieval. Classifiaction with audio. Training with margin {MARGIN} and {epochs} epochs, and batch size {batch_size}.")
+        file.write(f"Query is Visual. Tactile+Audio as Retrieval. Classifiaction with vision. Training with margin {MARGIN} and {epochs} epochs, and batch size {batch_size}.")
 
 
     # Load your embeddings
-    query_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/tactile_embeddings_train.npy", allow_pickle=True).item()
-    fused_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/visual_audio_fused_train.npy", allow_pickle=True).item()
-    query_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/tactile_embeddings_test.npy", allow_pickle=True).item()  
-    fused_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-tactile-query/visual_audio_fused_test.npy", allow_pickle=True).item()  
+    query_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-visual-query/visual_embeddings_train.npy", allow_pickle=True).item()
+    fused_embeddings = np.load("/scratch/users/k21171248/c-entropy-results-visual-query/tactile_audio_fused_train.npy", allow_pickle=True).item()
+    query_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-visual-query/visual_embeddings_test.npy", allow_pickle=True).item()  
+    fused_embeddings_test = np.load("/scratch/users/k21171248/c-entropy-results-visual-query/tactile_audio_fused_test.npy", allow_pickle=True).item()  
 
     # Instantiate your dataset and dataloader
     triplet_dataset = TripletDataset(query_embeddings, fused_embeddings)

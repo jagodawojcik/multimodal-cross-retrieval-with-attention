@@ -16,7 +16,7 @@ MARGIN = 0.5
 # Set device to gpu if available
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def train_with_triplet_loss(epochs=EPOCHS, batch_size=5):
+def train_with_triplet_loss(epochs=EPOCHS, batch_size=1):
     print("STARTING TRAINING...")
 
     #Create a directory to save your results

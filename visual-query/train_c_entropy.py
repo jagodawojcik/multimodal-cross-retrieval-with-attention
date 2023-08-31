@@ -12,7 +12,7 @@ EPOCHS_PRETRAIN = 15
 EPOCHS_C_ENTROPY = 50
 BATCH_SIZE = 5
 
-RESULTS_DIRECTORY = 'c-entropy-results-tactile-query'
+RESULTS_DIRECTORY = 'c-entropy-results-visual-query'
 
 def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=EPOCHS_C_ENTROPY, batch_size=BATCH_SIZE):
 
@@ -94,7 +94,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
         print(f'Pretraining Epoch {epoch}, Test Loss: {test_loss}')
 
     # Save the model
-    torch.save(tactile_network.state_dict(), f"{RESULTS_DIRECTORY}/model_best_query2fused.pth")
+    torch.save(tactile_network.state_dict(), f"{RESULTS_DIRECTORY}/model_query2fused.pth")
     
     # Plot train and test loss
     plt.figure(figsize=(10, 5))
@@ -145,7 +145,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
             audio_output, tactile_output, visual_output, attention_out, joint_embeddings = network(audio_input, tactile_input, visual_input)
 
             # Compute the loss
-            loss = criterion(audio_output, targets)
+            loss = criterion(visual_output, targets)
             total_train_loss += loss.item()
 
             # Backward and optimize
@@ -183,7 +183,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
                 loss = criterion(joint_embeddings, targets)
                 total_test_loss += loss.item()
                 # Compute the loss but on audio
-                audio_loss = criterion(audio_output, targets)  
+                audio_loss = criterion(visual_output, targets)  
                 total_test_loss_audio += audio_loss.item() 
 
                 # Save test embeddings for each batch
@@ -201,7 +201,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
         audio_test_loss = total_test_loss_audio / len(test_loader) 
         test_losses_audio.append(audio_test_loss)  # <- Append audio-specific test loss for current epoch
 
-        print(f'Epoch {epoch}, Train Loss: {epoch_train_loss}, Test Loss: {test_loss}, Audio Test Loss: {audio_test_loss}')  # <- Update the print statement
+        print(f'Epoch {epoch}, Train Loss: {epoch_train_loss}, Test Loss: {test_loss}, Vision Test Loss: {audio_test_loss}')  # <- Update the print statement
 
 
     # Save the embeddings after all epochs
@@ -209,11 +209,11 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
     np.save(f"{RESULTS_DIRECTORY}/audio_embeddings_train.npy", dict(audio_embeddings_train))
     np.save(f"{RESULTS_DIRECTORY}/tactile_embeddings_train.npy", dict(tactile_embeddings_train))
     np.save(f"{RESULTS_DIRECTORY}/visual_embeddings_train.npy", dict(visual_embeddings_train))
-    np.save(f"{RESULTS_DIRECTORY}/visual_audio_fused_train.npy", dict(visual_tactile_fused_train))
+    np.save(f"{RESULTS_DIRECTORY}/tactile_audio_fused_train.npy", dict(visual_tactile_fused_train))
     np.save(f"{RESULTS_DIRECTORY}/audio_embeddings_test.npy", dict(audio_embeddings_test))
     np.save(f"{RESULTS_DIRECTORY}/tactile_embeddings_test.npy", dict(tactile_embeddings_test))
     np.save(f"{RESULTS_DIRECTORY}/visual_embeddings_test.npy", dict(visual_embeddings_test))
-    np.save(f"{RESULTS_DIRECTORY}/visual_audio_fused_test.npy", dict(visual_tactile_fused_test))
+    np.save(f"{RESULTS_DIRECTORY}/tactile_audio_fused_test.npy", dict(visual_tactile_fused_test))
     # Save the trained model
     torch.save(network.state_dict(), f"{RESULTS_DIRECTORY}/audio-visual-tactile-model.pth")
     

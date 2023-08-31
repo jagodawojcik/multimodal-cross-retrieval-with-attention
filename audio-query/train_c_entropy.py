@@ -145,7 +145,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
             audio_output, tactile_output, visual_output, attention_out, joint_embeddings = network(audio_input, tactile_input, visual_input)
 
             # Compute the loss
-            loss = criterion(audio_output, targets)
+            loss = criterion(visual_output, targets)
             total_train_loss += loss.item()
 
             # Backward and optimize
@@ -201,7 +201,7 @@ def train_with_cross_entropy(epochs_pre = EPOCHS_PRETRAIN, epochs_cross_entropy=
         vision_test_loss = total_test_loss_vision / len(test_loader) 
         test_losses_vision.append(vision_test_loss)  # <- Append audio-specific test loss for current epoch
 
-        print(f'Epoch {epoch}, Train Loss: {epoch_train_loss}, Test Loss: {test_loss}, Audio Test Loss: {vision_test_loss}')  # <- Update the print statement
+        print(f'Epoch {epoch}, Train Loss: {epoch_train_loss}, Test Loss: {test_loss}, Vision Test Loss: {vision_test_loss}')  # <- Update the print statement
 
 
     # Save the embeddings after all epochs
