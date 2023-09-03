@@ -150,7 +150,7 @@ class TripletLoss(nn.Module):
 class TripletDataset(Dataset):
     def __init__(self, visual_embeddings, tactile_embeddings):
         assert visual_embeddings.keys() == tactile_embeddings.keys()
-
+        random.seed(0)
         self.labels = list(visual_embeddings.keys())
         self.visual_embeddings = visual_embeddings
         self.tactile_embeddings = tactile_embeddings
